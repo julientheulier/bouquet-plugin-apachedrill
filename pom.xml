@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>openbouquet</groupId>
+		<groupId>io.openbouquet</groupId>
 		<artifactId>bouquet-parent</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../bouquet-parent/pom.xml</relativePath>
