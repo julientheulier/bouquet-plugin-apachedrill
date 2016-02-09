@@ -55,7 +55,7 @@
 	</build>
 	<dependencies>
 		<dependency>
-			<groupId>openbouquet</groupId>
+			<groupId>io.openbouquet</groupId>
 			<artifactId>bouquet-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
