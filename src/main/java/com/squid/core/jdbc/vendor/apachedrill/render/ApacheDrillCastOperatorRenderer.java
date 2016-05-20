@@ -27,7 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.squid.core.domain.IDomain;
-import com.squid.core.domain.extensions.CastOperatorDefinition;
+import com.squid.core.domain.extensions.cast.CastOperatorDefinition;
 import com.squid.core.domain.operators.ExtendedType;
 import com.squid.core.domain.operators.OperatorDefinition;
 import com.squid.core.sql.db.render.CastOperatorRenderer;
