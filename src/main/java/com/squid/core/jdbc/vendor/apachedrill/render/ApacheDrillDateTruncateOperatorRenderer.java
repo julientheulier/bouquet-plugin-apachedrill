@@ -53,6 +53,10 @@ public class ApacheDrillDateTruncateOperatorRenderer extends DateTruncateOperato
         	//if(logger.isDebugEnabled()){logger.debug(("CAST(CONCAT(EXTRACT(year FROM (CAST("+args[0]+" AS DATE))),'-',EXTRACT(month FROM (CAST("+args[0]+" AS DATE))),'-01') AS DATE)"));}
         	return "CAST(CONCAT(EXTRACT(year FROM (CAST("+args[0]+" AS DATE))),'-',EXTRACT(month FROM (CAST("+args[0]+" AS DATE))),'-01') AS DATE)" ;
             //return "CAST(EXTRACT("+ args[0] +" ,'%Y-%m-01') as DATE)";
+        } else if(DateTruncateOperatorDefinition.QUARTER.equals(args[1].replaceAll("'", ""))) { //Overly complicated but Drill wants a DATE type to be able to use EXTRACT
+        	if(logger.isDebugEnabled()){logger.debug(("CAST(CONCAT(EXTRACT(year FROM (CAST("+args[0]+" AS DATE))),'-',(EXTRACT(quarter FROM (CAST("+args[0]+" AS DATE)))-1)*3+1,'-01') AS DATE)"));}
+        	return "CAST(CONCAT(EXTRACT(year FROM (CAST("+args[0]+" AS DATE))),'-',(EXTRACT(quarter FROM (CAST("+args[0]+" AS DATE)))-1)*3+1,'-01') AS DATE)" ;
+            //return "CAST(EXTRACT("+ args[0] +" ,'%Y-%m-01') as DATE)";
         } else if(DateTruncateOperatorDefinition.YEAR.equals(args[1].replaceAll("'", ""))) {
         	//if(logger.isDebugEnabled()){logger.debug(("CAST(CONCAT(EXTRACT(year FROM (CAST("+args[0]+" AS DATE))),'-',EXTRACT(month FROM (CAST("+args[0]+" AS DATE))),'-',EXTRACT(day FROM (CAST("+args[0]+" AS DATE)))) AS DATE)"));}
         	return "CAST(CONCAT(EXTRACT(year FROM (CAST("+args[0]+" AS DATE))),'-',EXTRACT(month FROM (CAST("+args[0]+" AS DATE))),'-',EXTRACT(day FROM (CAST("+args[0]+" AS DATE)))) AS DATE)" ;
