@@ -27,7 +27,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import org.apache.hadoop.io.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,8 +71,7 @@ public class ApacheDrillJDBCDataFormatter extends DefaultJDBCDataFormatter {
 		
 		// VARCHAR are actually hadoop text
 		case Types.VARCHAR:
-			Text hadoopText = (Text)jdbcObject;
-			return (hadoopText.toString());
+			return jdbcObject.toString(); 
 
 			
 		default:
