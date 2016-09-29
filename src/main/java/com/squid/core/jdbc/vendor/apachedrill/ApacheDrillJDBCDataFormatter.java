@@ -65,7 +65,7 @@ public class ApacheDrillJDBCDataFormatter extends DefaultJDBCDataFormatter {
 	
 	@Override
 	public Object unboxJDBCObject(final Object jdbcObject, final int colType) throws SQLException {
-		String value = "";
+		//String value = "";
 
 		switch (colType) {
 		
