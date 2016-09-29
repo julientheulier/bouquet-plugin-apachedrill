@@ -25,6 +25,7 @@ package com.squid.core.jdbc.vendor.apachedrill;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.Map;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -35,6 +36,8 @@ import com.squid.core.database.model.DatabaseProduct;
 import com.squid.core.jdbc.formatter.DataFormatter;
 import com.squid.core.jdbc.formatter.IJDBCDataFormatter;
 import com.squid.core.jdbc.vendor.DefaultVendorSupport;
+import com.squid.core.jdbc.vendor.JdbcUrlParameter;
+import com.squid.core.jdbc.vendor.JdbcUrlTemplate;
 
 public class ApacheDrillVendorSupport extends DefaultVendorSupport {
 	
@@ -68,6 +71,69 @@ public class ApacheDrillVendorSupport extends DefaultVendorSupport {
 	public IJDBCDataFormatter createFormatter(DataFormatter formatter,
 			Connection connection) {
 		return new ApacheDrillJDBCDataFormatter(formatter, connection);
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.squid.core.jdbc.vendor.DefaultVendorSupport#getJdbcUrlTemplate()
+	 */
+	@Override
+	public JdbcUrlTemplate getJdbcUrlTemplate() {
+		JdbcUrlTemplate template = new JdbcUrlTemplate("Drill","jdbc:drill:[drillbit=<drillbit>][zk=<zk name>][:<port][<path>]");
+		template.add(new JdbcUrlParameter("drillbit", true));
+		template.add(new JdbcUrlParameter("zk name", true));
+		template.add(new JdbcUrlParameter("port", true, "2181"));
+		template.add(new JdbcUrlParameter("path", true));
+		return template;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.squid.core.jdbc.vendor.DefaultVendorSupport#buildJdbcUrl(java.util.Map)
+	 */
+	@Override
+	public String buildJdbcUrl(Map<String, String> arguments) throws IllegalArgumentException {
+		String url = "jdbc:drill:";
+		String hostname = arguments.get("hostname");
+		if (hostname!=null && !hostname.equals("")) {
+			if (hostname.startsWith("zk=") || hostname.startsWith("drillbit=")) {
+				url += hostname;
+			} else {
+				throw new IllegalArgumentException("cannot build JDBC url, missing mandatory arguments: <drillbit> either <zk name> must be defined");
+			}
+		} else {
+			String drillbit = arguments.get("drillbit");
+			String zcname = arguments.get("zk name");
+			if (drillbit!=null && zcname!=null && !drillbit.equals("") && !zcname.equals("")) {
+				throw new IllegalArgumentException("cannot build JDBC url, incompatible arguments: <drillbit> either <zk name> must be defined");
+			} else if (drillbit!=null && !drillbit.equals("")) {
+				url += "drillbit="+drillbit;
+			} if (zcname!=null && !zcname.equals("")) {
+				url += "zk="+zcname;
+			} else {
+				throw new IllegalArgumentException("cannot build JDBC url, missing mandatory arguments: <drillbit> either <zk name> must be defined");
+			}
+		}
+		// port
+		String port = arguments.get("port");
+		if (port!=null && !port.equals("")) {
+			// check it's an integer
+			try {
+				int p = Integer.valueOf(port);
+				url += ":"+Math.abs(p);// just in case
+			} catch (NumberFormatException e) {
+				throw new IllegalArgumentException("cannot build JDBC url, <port> value must be a valid port number");
+			}
+		}
+		// path
+		String path = arguments.get("path");
+		if (path==null || path.equals("")) {
+			path = arguments.get("database");
+		}
+		if (path!=null && !path.equals("")) {
+			if (!path.startsWith("/")) url += "/";
+			url += path;
+		}
+		// validate ?
+		return url;
 	}
 
 }
