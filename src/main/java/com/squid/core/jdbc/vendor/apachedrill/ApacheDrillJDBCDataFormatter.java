@@ -71,7 +71,7 @@ public class ApacheDrillJDBCDataFormatter extends DefaultJDBCDataFormatter {
 		
 		// VARCHAR are actually hadoop text
 		case Types.VARCHAR:
-			return jdbcObject.toString(); 
+			return jdbcObject!=null?jdbcObject.toString():null; 
 
 			
 		default:
