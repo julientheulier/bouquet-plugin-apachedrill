@@ -78,7 +78,7 @@ public class ApacheDrillVendorSupport extends DefaultVendorSupport {
 	 */
 	@Override
 	public JdbcUrlTemplate getJdbcUrlTemplate() {
-		JdbcUrlTemplate template = new JdbcUrlTemplate("Drill","jdbc:drill:[drillbit=<drillbit>][zk=<zk name>][:<port][<path>]");
+		JdbcUrlTemplate template = new JdbcUrlTemplate("Drill","jdbc:drill:[drillbit=<drillbit> | zk=<zk name>][:<port][<path>]");
 		template.add(new JdbcUrlParameter("drillbit", true));
 		template.add(new JdbcUrlParameter("zk name", true));
 		template.add(new JdbcUrlParameter("port", true, "2181"));
@@ -97,19 +97,19 @@ public class ApacheDrillVendorSupport extends DefaultVendorSupport {
 			if (hostname.startsWith("zk=") || hostname.startsWith("drillbit=")) {
 				url += hostname;
 			} else {
-				throw new IllegalArgumentException("cannot build JDBC url, missing mandatory arguments: <drillbit> either <zk name> must be defined");
+				throw new IllegalArgumentException("cannot build JDBC url, invalid hostname: please use either drillbit=... or zk=... definition");
 			}
 		} else {
 			String drillbit = arguments.get("drillbit");
 			String zcname = arguments.get("zk name");
 			if (drillbit!=null && zcname!=null && !drillbit.equals("") && !zcname.equals("")) {
-				throw new IllegalArgumentException("cannot build JDBC url, incompatible arguments: <drillbit> either <zk name> must be defined");
+				throw new IllegalArgumentException("cannot build JDBC url, incompatible arguments: either [drillbit] or [zk name] properties must be defined");
 			} else if (drillbit!=null && !drillbit.equals("")) {
 				url += "drillbit="+drillbit;
 			} if (zcname!=null && !zcname.equals("")) {
 				url += "zk="+zcname;
 			} else {
-				throw new IllegalArgumentException("cannot build JDBC url, missing mandatory arguments: <drillbit> either <zk name> must be defined");
+				throw new IllegalArgumentException("cannot build JDBC url, missing mandatory arguments: either [drillbit] or [zk name] properties must be defined");
 			}
 		}
 		// port
@@ -120,7 +120,7 @@ public class ApacheDrillVendorSupport extends DefaultVendorSupport {
 				int p = Integer.valueOf(port);
 				url += ":"+Math.abs(p);// just in case
 			} catch (NumberFormatException e) {
-				throw new IllegalArgumentException("cannot build JDBC url, <port> value must be a valid port number");
+				throw new IllegalArgumentException("cannot build JDBC url, [port] value must be a valid port number");
 			}
 		}
 		// path
