@@ -32,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.squid.core.database.metadata.IMetadataEngine;
+import com.squid.core.database.metadata.VendorMetadataSupport;
 import com.squid.core.database.model.DatabaseProduct;
 import com.squid.core.jdbc.formatter.DataFormatter;
 import com.squid.core.jdbc.formatter.IJDBCDataFormatter;
@@ -40,6 +41,8 @@ import com.squid.core.jdbc.vendor.JdbcUrlParameter;
 import com.squid.core.jdbc.vendor.JdbcUrlTemplate;
 
 public class ApacheDrillVendorSupport extends DefaultVendorSupport {
+	
+	private static final VendorMetadataSupport DRILL_METADATA_SUPPORT = new ApacheDrillMetadataSupport();
 	
 	public static final String VENDOR_ID =  IMetadataEngine.APACHEDRILL_NAME;
     static final Logger logger = LoggerFactory.getLogger(ApacheDrillVendorSupport.class);
@@ -134,6 +137,14 @@ public class ApacheDrillVendorSupport extends DefaultVendorSupport {
 		}
 		// validate ?
 		return url;
+	}
+	
+	/* (non-Javadoc)
+	 * @see com.squid.core.jdbc.vendor.DefaultVendorSupport#getVendorMetadataSupport()
+	 */
+	@Override
+	public VendorMetadataSupport getVendorMetadataSupport() {
+		return DRILL_METADATA_SUPPORT;
 	}
 
 }
