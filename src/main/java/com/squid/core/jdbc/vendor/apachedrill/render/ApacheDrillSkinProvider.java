@@ -243,7 +243,7 @@ public class ApacheDrillSkinProvider extends DefaultSkinProvider
 
 	@Override
 	public String getSkinPrefix(DatabaseProduct product) {
-		return "drill";
+		return "apachedrill";
 	}
 
 	@Override
