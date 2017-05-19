@@ -99,7 +99,7 @@ public class ApacheDrillSkinProvider extends DefaultSkinProvider
 		registerOperatorRender(AddMonthsOperatorDefinition.ADD_MONTHS, new AddMonthsAsIntervalOperatorRenderer()); //TODO test
 		//
 		registerOperatorRender(OperatorDefinition.getExtendedId(IntrinsicOperators.AVG),new ApacheDrillAvgRenderer()); //TODO test
-		registerOperatorRender(OperatorDefinition.getExtendedId(IntrinsicOperators.VARIANCE),new ApacheDrillVarStdevRenderer()); //TODO test
+		registerOperatorRender(OperatorDefinition.getExtendedId(IntrinsicOperators.VAR_POP),new ApacheDrillVarStdevRenderer()); //TODO test
 		registerOperatorRender(OperatorDefinition.getExtendedId(IntrinsicOperators.VAR_SAMP),new ApacheDrillVarStdevRenderer()); //TODO test
 		registerOperatorRender(OperatorDefinition.getExtendedId(IntrinsicOperators.STDDEV_POP),new ApacheDrillVarStdevRenderer()); //TODO test
 		registerOperatorRender(OperatorDefinition.getExtendedId(IntrinsicOperators.STDDEV_SAMP),new ApacheDrillVarStdevRenderer()); //TODO test
